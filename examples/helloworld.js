@@ -13,6 +13,7 @@
  * 
  */
 process.env['SPARK_TOKEN'] = "ZTQ4YWVhM2ItMTk4MC00YTU0LWJmNGYtMzVlOTg0OTc0MzkwYWU5NGRlMDUtMDc3";
+
 var SparkBot = require("node-sparkbot");
 var bot = new SparkBot();
 //bot.interpreter.prefix = "#"; // Remove comment to overlad default / prefix to identify bot commands
@@ -97,33 +98,68 @@ bot.onEvent("memberships", "created", function (trigger) {
     }); 
 });
 
-//bot.onMessage(function(trigger, message) {
+bot.onMessage(function(trigger, message) {
 
   //
   // ADD YOUR CUSTOM CODE HERE
   //
-  //console.log("new message from: " + trigger.data.personEmail + ", text: " + message.text);
+  console.log("new message from: " + trigger.data.personEmail + ", text: " + message.text);
 
-   // var command = bot.asCommand(message);
-   //  if (command) {
-   //      console.log("detected command: " + command.keyword + ", with args: " + JSON.stringify(command.args));
-   //  }
+   var command = bot.asCommand(message);
+     if (command) {
+         console.log("detected command: " + command.keyword + ", with args: " + JSON.stringify(command.args));
+         parseCommand(command, message);
+     }
+});
 
-  // spark.createMessage(trigger.data.roomId, "Hi, I am Jeff's Hello World bot !\n\nType /hello to see me in action.\n\n This was your message: " + message.text, { "markdown":true }, function(err, message) {
-  //       if (err) {
-  //           console.log("WARNING: could not post Hello message to room: " + trigger.data.roomId);
-  //           return;
-  //       }
-  //
-  //       if (message.roomType == "group") {
-  //           spark.createMessage(trigger.data.roomId, "**Note that this is a 'Group' room. I will wake up only when mentionned.**", { "markdown":true }, function(err, message) {
-  //               if (err) {
-  //                   console.log("WARNING: could not post Mention message to room: " + trigger.data.roomId);
-  //                   return;
-  //               }
-  //           });
-  //       }
-  //   });
 
-//});
+function parseCommand(command, message) {
+    switch(command.keyword)
+         {
+             case 'test':
+                 var email = command.message.personEmail; // Spark User that created the message orginally
+                 spark.createMessage(command.message.roomId, "Just a little test my good friend <@personEmail:" + email + ">", { "markdown":true }, function(err, message) {
+                    if (err) {
+                        console.log("WARNING: could not post Hello message to room: " + command.message.roomId);
+                        return;
+                    }
+                });;
+                break;
+            case 'help' :
+                spark.createMessage(command.message.roomId, "Hi, I am Jeff's bot !\n\nType /hello to see me in action.", { "markdown":true }, function(err, message) {
+                if (err) {
+                    console.log("WARNING: could not post message to room: " + command.message.roomId);
+                return;
+                }
+            });;
+            break;
+            case 'hello':
+                 var email = command.message.personEmail; // Spark User that created the message orginally
+                 spark.createMessage(command.message.roomId, "Hello <@personEmail:" + email + ">", { "markdown":true }, function(err, message) {
+                    if (err) {
+                        console.log("WARNING: could not post Hello message to room: " + command.message.roomId);
+                        return;
+                    }
+                });;
+            break;
+            case 'whoami' :
+                 // Check usage
+                spark.createMessage(command.message.roomId, "Hi there\n\n Your Person Id is: " + command.message.personId + "\n\nYour email is: " + command.message.personEmail,{ "markdown":true }, function(err, message) {
+                    if (err) {
+                        console.log("WARNING: could not post Hello message to room: " + command.message.roomId);
+                        return;
+                    }
+                });;
+             break;
+            default :
+                spark.createMessage(command.message.roomId, "Sorry, I did not understand.\n\nTry /help.", { "markdown":true }, function(err, response) {
+                if (err) {
+                    console.log("WARNING: could not post Fallback message to room: " + command.message.roomId);
+                    return;
+                    }
+                });
+
+         }
+
+}
 
