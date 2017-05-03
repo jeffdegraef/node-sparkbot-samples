@@ -12,19 +12,21 @@
  * + leverages the "node-sparkclient" library for Bot to Cisco Spark communications.
  * 
  */
-
+process.env['SPARK_TOKEN'] = "ZTQ4YWVhM2ItMTk4MC00YTU0LWJmNGYtMzVlOTg0OTc0MzkwYWU5NGRlMDUtMDc3";
 var SparkBot = require("node-sparkbot");
 var bot = new SparkBot();
 //bot.interpreter.prefix = "#"; // Remove comment to overlad default / prefix to identify bot commands
 
+console.log("TOKEN: " + process.env.SPARK_TOKEN);
 var SparkAPIWrapper = require("node-sparkclient");
-if (!process.env.SPARK_TOKEN) {
-    console.log("Could not start as this bot requires a Cisco Spark API access token.");
-    console.log("Please add env variable SPARK_TOKEN on the command line");
-    console.log("Example: ");
-    console.log("> SPARK_TOKEN=XXXXXXXXXXXX DEBUG=sparkbot* node helloworld.js");
-    process.exit(1);
-}
+// if (!process.env.SPARK_TOKEN) {
+//     console.log("Could not start as this bot requires a Cisco Spark API access token.");
+//     console.log("Please add env variable SPARK_TOKEN on the command line");
+//     console.log("Example: ");
+//     console.log("> SPARK_TOKEN=XXXXXXXXXXXX DEBUG=sparkbot* node helloworld.js");
+//     process.exit(1);
+// }
+//var spark = new SparkAPIWrapper({ token: "ZTQ4YWVhM2ItMTk4MC00YTU0LWJmNGYtMzVlOTg0OTc0MzkwYWU5NGRlMDUtMDc3"});
 var spark = new SparkAPIWrapper(process.env.SPARK_TOKEN);
 
 
@@ -32,7 +34,7 @@ var spark = new SparkAPIWrapper(process.env.SPARK_TOKEN);
 // Help and fallback commands
 //
 bot.onCommand("help", function (command) {
-    spark.createMessage(command.message.roomId, "Hi, I am the Hello World bot !\n\nType /hello to see me in action.", { "markdown":true }, function(err, message) {
+    spark.createMessage(command.message.roomId, "Hi, I am Jeff's Hello World bot !\n\nType /hello to see me in action.", { "markdown":true }, function(err, message) {
         if (err) {
             console.log("WARNING: could not post message to room: " + command.message.roomId);
             return;
@@ -94,4 +96,34 @@ bot.onEvent("memberships", "created", function (trigger) {
         }      
     }); 
 });
+
+//bot.onMessage(function(trigger, message) {
+
+  //
+  // ADD YOUR CUSTOM CODE HERE
+  //
+  //console.log("new message from: " + trigger.data.personEmail + ", text: " + message.text);
+
+   // var command = bot.asCommand(message);
+   //  if (command) {
+   //      console.log("detected command: " + command.keyword + ", with args: " + JSON.stringify(command.args));
+   //  }
+
+  // spark.createMessage(trigger.data.roomId, "Hi, I am Jeff's Hello World bot !\n\nType /hello to see me in action.\n\n This was your message: " + message.text, { "markdown":true }, function(err, message) {
+  //       if (err) {
+  //           console.log("WARNING: could not post Hello message to room: " + trigger.data.roomId);
+  //           return;
+  //       }
+  //
+  //       if (message.roomType == "group") {
+  //           spark.createMessage(trigger.data.roomId, "**Note that this is a 'Group' room. I will wake up only when mentionned.**", { "markdown":true }, function(err, message) {
+  //               if (err) {
+  //                   console.log("WARNING: could not post Mention message to room: " + trigger.data.roomId);
+  //                   return;
+  //               }
+  //           });
+  //       }
+  //   });
+
+//});
 
