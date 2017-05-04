@@ -11,13 +11,15 @@ var request = require("request");
 
 module.exports.fetchUC = function(cb) {
 
+    console.log("In fetchUC");
     // Get list of UC portfolio elements, let's point to our Node-Red websocket
     var options = {
         method: 'GET',
-        url: "http://ec2-54-245-6-218.us-west-2.compute.amazonaws.com/api/v1/porfolio/"
+        url: "http://ec2-54-245-6-218.us-west-2.compute.amazonaws.com:1880/api/v1/porfolio"
     };
 
     request(options, function (error, response, body) {
+        console.log("In response:" + body);
         if (error) {
             debug("could not retreive list of portfolio elements: " + error);
             cb(new Error("Could not retreive portfolio elements, sorry [Portfolio API not responding]"), null);
@@ -31,23 +33,29 @@ module.exports.fetchUC = function(cb) {
         }
 
         var events = JSON.parse(body);
+        console.log("In JSON:" + JSON.stringify(events));
         debug("fetched " + events.length + " portfolio elements");
         fine(JSON.stringify(events));
 
-        if (events.length == 0) {
+        if (Object.keys(events).length == 0) {
             cb(null, "**Guess what? No portfolio elements!**");
             return;
         }
 
-        var nb = events.length;
+        //todo still need to debug, lenght is not working
+        var nb = Object.keys(events).length;
         var msg = "**" + nb + " portfolio elements:**";
+
         if (nb == 1) {
             msg = "**1 portfolio element:**";
         }
+
+        console.log("In msg:" + msg);
+
         for (var i = 0; i < nb; i++) {
             var current = events[i];
             //todo define parameters for portfolio element
-            msg += "\n- " + current.Portfolio + " - " + current.PortfolioElement + ": [" + current.PortfolioElementDescription + "](" + current.PortfolioElementUrl + ")";
+            msg += "\n- " + current.element + " - " + current.collateral + ": [" + current.helloText + ")";
         }
 
         cb(null, msg);

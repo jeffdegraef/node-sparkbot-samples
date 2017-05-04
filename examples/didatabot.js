@@ -151,7 +151,7 @@ function parseCommand(command, message) {
                     }
                 });;
              break;
-            case 'portfolioUC' :
+            case 'aa' :
                 // let's acknowledge we received the order
                 spark.createMessage(command.message.roomId, "_heard you! asking my crystal ball..._",{ "markdown":true }, function(err, message) {
                     if (err) {
@@ -165,21 +165,24 @@ function parseCommand(command, message) {
                 if (!limit) limit = 5;
                 if (limit < 1) limit = 1;
 
-                portfolio.fetchUC(function (err, events) {
+                portfolio.fetchUC(function (err,events) {
                     if (err) {
-                        spark.messageSendRoom(command.message.roomId, {
-                             markdown: "**sorry, ball seems broken :-(**"
-                        });
-                        return;
-                    }
 
-                    spark.createMessage(command.message.roomId, "_heard you! asking my crystal ball..._",{ "markdown":true }, function(err, message) {
+                        spark.createMessage(command.message.roomId, events,{ "markdown":true }, function(err, message) {
+                        if (err) {
+                            console.log("**sorry, ball seems broken :-(**");
+                            return;
+                        }
+                    });
+
+
+                    spark.createMessage(command.message.roomId, events,{ "markdown":true }, function(err, message) {
                         if (err) {
                             console.log("WARNING: could not ask crystal ball ");
                             return;
                         }
                     });
-                    });
+                    }});
                 ;
              break;
             default :
