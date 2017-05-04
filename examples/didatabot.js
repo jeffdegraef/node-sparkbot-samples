@@ -29,7 +29,7 @@ var SparkAPIWrapper = require("node-sparkclient");
 // }
 //var spark = new SparkAPIWrapper({ token: "ZTQ4YWVhM2ItMTk4MC00YTU0LWJmNGYtMzVlOTg0OTc0MzkwYWU5NGRlMDUtMDc3"});
 var spark = new SparkAPIWrapper(process.env.SPARK_TOKEN);
-
+var portfolio = require("./portfolio");
 
 //
 // Help and fallback commands
@@ -150,6 +150,37 @@ function parseCommand(command, message) {
                         return;
                     }
                 });;
+             break;
+            case 'portfolioUC' :
+                // let's acknowledge we received the order
+                spark.createMessage(command.message.roomId, "_heard you! asking my crystal ball..._",{ "markdown":true }, function(err, message) {
+                    if (err) {
+                        console.log("WARNING: could not ask crystal ball ");
+                        return;
+                    }
+                });
+
+
+                var limit = parseInt(command.args[0]);
+                if (!limit) limit = 5;
+                if (limit < 1) limit = 1;
+
+                portfolio.fetchUC(function (err, events) {
+                    if (err) {
+                        spark.messageSendRoom(command.message.roomId, {
+                             markdown: "**sorry, ball seems broken :-(**"
+                        });
+                        return;
+                    }
+
+                    spark.createMessage(command.message.roomId, "_heard you! asking my crystal ball..._",{ "markdown":true }, function(err, message) {
+                        if (err) {
+                            console.log("WARNING: could not ask crystal ball ");
+                            return;
+                        }
+                    });
+                    });
+                ;
              break;
             default :
                 spark.createMessage(command.message.roomId, "Sorry, I did not understand.\n\nTry /help.", { "markdown":true }, function(err, response) {

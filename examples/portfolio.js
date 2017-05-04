@@ -11,15 +11,15 @@ var request = require("request");
 
 module.exports.fetchUC = function(cb) {
 
-    // Get list of UC portfolio elements
+    // Get list of UC portfolio elements, let's point to our Node-Red websocket
     var options = {
         method: 'GET',
-        url: "https://devnet-events-api.herokuapp.com/api/v1/events/next?limit="
+        url: "http://ec2-54-245-6-218.us-west-2.compute.amazonaws.com/api/v1/porfolio/"
     };
 
     request(options, function (error, response, body) {
         if (error) {
-            debug("could not retreive list of portfolio elements", error: " + error);
+            debug("could not retreive list of portfolio elements: " + error);
             cb(new Error("Could not retreive portfolio elements, sorry [Portfolio API not responding]"), null);
             return;
         }
