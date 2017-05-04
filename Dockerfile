@@ -3,7 +3,7 @@
 # - argon-slim : Light node env (200 MB) : no python, can be an issue for npm installs / builds
 FROM node:argon-slim
 
-MAINTAINER Stève Sfartz
+MAINTAINER Jeff De Graef
 
 EXPOSE 8080
 
@@ -26,7 +26,7 @@ COPY . /home/node/sparkbot
 RUN chown -R node:node /home/node/sparkbot
 USER node
 ENV HOME /home/node
-ENV SCRIPT templates/onEvent-all-all.js
+ENV SCRIPT examples/helloworld.js
 
 # Run default sample
 CMD /usr/local/bin/node $SCRIPT
