@@ -15,7 +15,7 @@ module.exports.fetchUC = function(cb) {
     // Get list of UC portfolio elements, let's point to our Node-Red websocket
     var options = {
         method: 'GET',
-        url: "http://ec2-54-245-6-218.us-west-2.compute.amazonaws.com:1880/api/v1/porfolio"
+        url: "http://ec2-54-245-6-218.us-west-2.compute.amazonaws.com:1880/api/v1/porfolio?element=Cisco&collateral=Microsoft"
     };
 
     request(options, function (error, response, body) {
@@ -42,7 +42,6 @@ module.exports.fetchUC = function(cb) {
             return;
         }
 
-        //todo still need to debug, lenght is not working
         var nb = Object.keys(events).length;
         var msg = "**" + nb + " portfolio elements:**";
 
@@ -52,11 +51,18 @@ module.exports.fetchUC = function(cb) {
 
         console.log("In msg:" + msg);
 
-        for (var i = 0; i < nb; i++) {
-            var current = events[i];
-            //todo define parameters for portfolio element
-            msg += "\n- " + current.element + " - " + current.collateral + ": [" + current.helloText + ")";
-        }
+         var keys = Object.keys( events );
+         for( var i = 0,length = keys.length; i < length; i++ ) {
+             console.log(events[ keys[ i ] ]);
+             msg += "\n- " + events[ keys[ i ]];
+         }
+
+        // for (var i = 0; i < nb; i++) {
+        //     var current = events[i];
+        //     console.log("in events:" + JSON.stringify(current));
+        //     //todo define parameters for portfolio element
+        //     //msg += "\n- " + current.element + " - " + current.collateral + ": [" + current.helloText + ")";
+        // }
 
         cb(null, msg);
     });

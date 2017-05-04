@@ -166,15 +166,17 @@ function parseCommand(command, message) {
                 if (limit < 1) limit = 1;
 
                 portfolio.fetchUC(function (err,events) {
+                    console.log("retrieved events: " + events)
                     if (err) {
-
-                        spark.createMessage(command.message.roomId, events,{ "markdown":true }, function(err, message) {
-                        if (err) {
-                            console.log("**sorry, ball seems broken :-(**");
-                            return;
-                        }
-                    });
-
+                        console.log("ERROR fetching!!!")
+                        spark.createMessage(command.message.roomId, events, {"markdown": true}, function (err, message) {
+                            if (err) {
+                                console.log("**sorry, ball seems broken :-(**");
+                                return;
+                            }
+                        });
+                    }
+                    console.log("NO error detected");
 
                     spark.createMessage(command.message.roomId, events,{ "markdown":true }, function(err, message) {
                         if (err) {
@@ -182,7 +184,7 @@ function parseCommand(command, message) {
                             return;
                         }
                     });
-                    }});
+                    });
                 ;
              break;
             default :
