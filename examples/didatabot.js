@@ -118,48 +118,22 @@ function parseCommand(command, message) {
          {
              case 'test':
                  var email = command.message.personEmail; // Spark User that created the message orginally
-                 spark.createMessage(command.message.roomId, "Just a little test my good friend <@personEmail:" + email + ">", { "markdown":true }, function(err, message) {
-                    if (err) {
-                        console.log("WARNING: could not post Hello message to room: " + command.message.roomId);
-                        return;
-                    }
-                });;
-                break;
+                 sendMessage(command.message.roomId,"Just a little test my good friend <@personEmail:" + email + ">","WARNING: could not post Hello message to room: " + command.message.roomId,true);
+                 break;
             case 'help' :
-                spark.createMessage(command.message.roomId, "Hi, I am Jeff's bot !\n\nType /hello to see me in action.", { "markdown":true }, function(err, message) {
-                if (err) {
-                    console.log("WARNING: could not post message to room: " + command.message.roomId);
-                return;
-                }
-            });;
-            break;
+                sendMessage(command.message.roomId,"Hi, I am Jeff's bot !\n\nType /hello to see me in action.","WARNING: could not post message to room: " + command.message.roomId,true);
+                 break;
             case 'hello':
                  var email = command.message.personEmail; // Spark User that created the message orginally
-                 spark.createMessage(command.message.roomId, "Hello <@personEmail:" + email + ">", { "markdown":true }, function(err, message) {
-                    if (err) {
-                        console.log("WARNING: could not post Hello message to room: " + command.message.roomId);
-                        return;
-                    }
-                });;
-            break;
+                sendMessage(command.message.roomId,"Hello <@personEmail:" + email + ">","WARNING: could not Hello message to room: " + command.message.roomId,true);
+                 break;
             case 'whoami' :
                  // Check usage
-                spark.createMessage(command.message.roomId, "Hi there\n\n Your Person Id is: " + command.message.personId + "\n\nYour email is: " + command.message.personEmail,{ "markdown":true }, function(err, message) {
-                    if (err) {
-                        console.log("WARNING: could not post Hello message to room: " + command.message.roomId);
-                        return;
-                    }
-                });;
-             break;
+                sendMessage(command.message.roomId,"Hi there\n\n Your Person Id is: " + command.message.personId + "\n\nYour email is: " + command.message.personEmail,"WARNING: could not Hello message to room: " + command.message.roomId,true);
+                 break;
             case 'aa' :
                 // let's acknowledge we received the order
-                spark.createMessage(command.message.roomId, "_heard you! asking my crystal ball..._",{ "markdown":true }, function(err, message) {
-                    if (err) {
-                        console.log("WARNING: could not ask crystal ball ");
-                        return;
-                    }
-                });
-
+                sendMessage(command.message.roomId,"_heard you! asking my crystal ball..._","WARNING: could not ask crystal ball",true);
 
                 var limit = parseInt(command.args[0]);
                 if (!limit) limit = 5;
@@ -169,33 +143,31 @@ function parseCommand(command, message) {
                     console.log("retrieved events: " + events)
                     if (err) {
                         console.log("ERROR fetching!!!")
-                        spark.createMessage(command.message.roomId, events, {"markdown": true}, function (err, message) {
-                            if (err) {
-                                console.log("**sorry, ball seems broken :-(**");
-                                return;
-                            }
-                        });
+                        sendMessage(command.message.roomId,events,"**sorry, ball seems broken :-(**",true);
                     }
                     console.log("NO error detected");
 
-                    spark.createMessage(command.message.roomId, events,{ "markdown":true }, function(err, message) {
-                        if (err) {
-                            console.log("WARNING: could not ask crystal ball ");
-                            return;
-                        }
-                    });
+                    sendMessage(command.message.roomId,events,"WARNING: could not ask crystal ball",true);
                     });
                 ;
              break;
             default :
-                spark.createMessage(command.message.roomId, "Sorry, I did not understand.\n\nTry /help.", { "markdown":true }, function(err, response) {
-                if (err) {
-                    console.log("WARNING: could not post Fallback message to room: " + command.message.roomId);
-                    return;
-                    }
-                });
+                sendMessage(command.message.roomId,"Sorry, I did not understand.\n\nTry /help.","WARNING: could not post Fallback message to room: " + command.message.roomId,true);
 
          }
+
+}
+
+function sendMessage(roomID,messageText, errormessage, markdown)
+
+{
+    console.log("In function sendMessage: " + messageText);
+    spark.createMessage(roomID, messageText, {"markdown": markdown}, function (err, message) {
+                            if (err) {
+                                console.log(errormessage);
+                                return;
+                            }
+                        });
 
 }
 
