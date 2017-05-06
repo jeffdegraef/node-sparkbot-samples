@@ -15,7 +15,7 @@ module.exports.fetchUC = function(cb) {
     // Get list of UC portfolio elements, let's point to our Node-Red websocket
     var options = {
         method: 'GET',
-        url: "http://ec2-54-245-6-218.us-west-2.compute.amazonaws.com:1880/api/v1/porfolio?element=Cisco&collateral=Microsoft"
+        url: "http://ec2-54-245-6-218.us-west-2.compute.amazonaws.com:1880/api/v1/porfolio?portfolio=UC&collateral=yes"
     };
 
     request(options, function (error, response, body) {

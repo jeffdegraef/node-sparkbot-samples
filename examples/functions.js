@@ -1,45 +1,9 @@
-//
-// Copyright (c) 2016 Cisco Systems
-// Licensed under the MIT License 
-//
-
-/* 
- * a Cisco Spark bot that:
- *   - sends a welcome message as he joins a room, 
- *   - answers to a /hello command, and greets the user that chatted him
- *   - supports /help and a fallback helper message
- *
- * + leverages the "node-sparkclient" library for Bot to Cisco Spark communications.
- * 
+/**
+ * Created by Mijn PC on 6/05/2017.
  */
-process.env['SPARK_TOKEN'] = "ZTQ4YWVhM2ItMTk4MC00YTU0LWJmNGYtMzVlOTg0OTc0MzkwYWU5NGRlMDUtMDc3";
 
-//import {parseCommand, sendMessage} from './functions';
+export function parseCommand(command, message) {
 
-var SparkBot = require("node-sparkbot");
-var bot = new SparkBot();
-//bot.interpreter.prefix = "#"; // Remove comment to overlad default / prefix to identify bot commands
-
-console.log("TOKEN: " + process.env.SPARK_TOKEN);
-var SparkAPIWrapper = require("node-sparkclient");
-
-var spark = new SparkAPIWrapper(process.env.SPARK_TOKEN);
-var portfolio = require("./portfolio");
-
-
-bot.onMessage(function(trigger, message) {
-
-  console.log("new message from: " + trigger.data.personEmail + ", text: " + message.text);
-
-   var command = bot.asCommand(message);
-     if (command) {
-         console.log("detected command: " + command.keyword + ", with args: " + JSON.stringify(command.args));
-         parseCommand(command, message);
-     }
-});
-
-
-function parseCommand(command, message) {
     switch(command.keyword)
          {
              case 'test':
@@ -84,9 +48,10 @@ function parseCommand(command, message) {
 
 }
 
-function sendMessage(roomID,messageText, errormessage, markdown)
 
-{
+export function sendMessage(roomID,messageText, errormessage, markdown) {
+
+
     console.log("In function sendMessage: " + messageText);
     spark.createMessage(roomID, messageText, {"markdown": markdown}, function (err, message) {
                             if (err) {
@@ -96,4 +61,3 @@ function sendMessage(roomID,messageText, errormessage, markdown)
                         });
 
 }
-
