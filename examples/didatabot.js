@@ -46,6 +46,9 @@ function parseCommand(command, message) {
                  var email = command.message.personEmail; // Spark User that created the message orginally
                  sendMessage(command.message.roomId,"Just a little test my good friend <@personEmail:" + email + ">","WARNING: could not post Hello message to room: " + command.message.roomId,true);
                  break;
+            case 'color' :
+                sendMessage(command.message.roomId,"> Item sqdfsdfdsf  qsdfqsdfqsdfqs sqdfsqfqsdf qsdfqsdfsqdfqsdfqsdf qsdfqsdfqsfqsdf","WARNING: could not post message to room: " + command.message.roomId,true);
+                 break;
             case 'help' :
                 sendMessage(command.message.roomId,"Hi, I am Jeff's bot !\n\nType /hello to see me in action.","WARNING: could not post message to room: " + command.message.roomId,true);
                  break;
@@ -60,12 +63,14 @@ function parseCommand(command, message) {
             case 'aa' :
                 // let's acknowledge we received the order
                 sendMessage(command.message.roomId,"_heard you! asking my crystal ball..._","WARNING: could not ask crystal ball",true);
+                var portfolioElement = "UC";
+                var collateral = "yes";
 
                 var limit = parseInt(command.args[0]);
                 if (!limit) limit = 5;
                 if (limit < 1) limit = 1;
 
-                portfolio.fetchUC(function (err,events) {
+                portfolio.SendBotRequest(portfolioElement,collateral,function (err,events) {
                     console.log("retrieved events: " + events)
                     if (err) {
                         console.log("ERROR fetching!!!")

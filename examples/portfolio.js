@@ -9,13 +9,13 @@ var fine = require("debug")("samples:fine");
 var request = require("request");
 
 
-module.exports.fetchUC = function(cb) {
+module.exports.SendBotRequest = function(portfolioElement,collateral,cb) {
 
-    console.log("In fetchUC");
-    // Get list of UC portfolio elements, let's point to our Node-Red websocket
+    console.log("In SendBotRequest");
+    // Get list of  portfolio elements, let's point to our Node-Red websocket
     var options = {
         method: 'GET',
-        url: "http://ec2-54-245-6-218.us-west-2.compute.amazonaws.com:1880/api/v1/porfolio?portfolio=UC&collateral=yes"
+        url: "http://ec2-54-245-6-218.us-west-2.compute.amazonaws.com:1880/api/v1/porfolio?portfolio=" + portfolioElement + "&collateral=" + collateral
     };
 
     request(options, function (error, response, body) {
@@ -43,10 +43,10 @@ module.exports.fetchUC = function(cb) {
         }
 
         var nb = Object.keys(events).length;
-        var msg = "**" + nb + " portfolio elements:**";
+        var msg = "**" + nb + " " + portfolioElement + " portfolio elements:**";
 
         if (nb == 1) {
-            msg = "**1 portfolio element:**";
+            msg = "**1"  + " " + portfolioElement + " portfolio element:**";
         }
 
         console.log("In msg:" + msg);
