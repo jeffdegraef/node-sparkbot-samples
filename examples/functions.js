@@ -3,7 +3,7 @@
  */
 
 export function parseCommand(command, message) {
-
+    console.log("PARSING");
     switch(command.keyword)
          {
              case 'test':
