@@ -54,13 +54,6 @@ module.exports.SendBotRequest = function(portfolioElement,collateral,cb) {
              msg += "\n- " + events[ keys[ i ]];
          }
 
-        // for (var i = 0; i < nb; i++) {
-        //     var current = events[i];
-        //     console.log("in events:" + JSON.stringify(current));
-        //     //todo define parameters for portfolio element
-        //     //msg += "\n- " + current.element + " - " + current.collateral + ": [" + current.helloText + ")";
-        // }
-
         cb(null, msg);
     });
 }
