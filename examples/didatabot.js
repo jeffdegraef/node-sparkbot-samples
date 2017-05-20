@@ -5,7 +5,7 @@
  * 
  */
 
-import {parseCommand} from 'functions';
+import {parseCommand} from './functions';
 
 process.env['SPARK_TOKEN'] = "ZTQ4YWVhM2ItMTk4MC00YTU0LWJmNGYtMzVlOTg0OTc0MzkwYWU5NGRlMDUtMDc3";
 console.log("Launching BOT with TOKEN: " + process.env.SPARK_TOKEN);

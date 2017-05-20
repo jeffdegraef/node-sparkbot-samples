@@ -11,21 +11,23 @@ module.exports = {
     ],
     output: {
         publicPath: '/',
-        filename: 'main.js'
+        filename: 'didata.js'
+    },
+    devServer: {
+        contentBase: "examples"
     },
     devtool: 'source-map',
     module: {
         loaders: [
             {
-                test: /\.js$/,
-                include: path.join(__dirname, 'examples'),
-                exclude: /node_modules/,
+                test: /\.js?$/,
+                include: path.resolve(__dirname, 'examples'),
                 loader: 'babel-loader',
                 query: {
-                    presets: ["es2015"],
+                    plugins: ['transform-runtime'],
+                    presets: ['es2015'],
                 }
             }
         ]
-    },
-    debug: true
+    }
 };
