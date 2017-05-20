@@ -1,7 +1,4 @@
-//
-// Copyright (c) 2016 Cisco Systems
-// Licensed under the MIT License 
-//
+
 
 var debug = require("debug")("samples");
 var fine = require("debug")("samples:fine");

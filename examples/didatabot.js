@@ -1,44 +1,34 @@
-//
-// Copyright (c) 2016 Cisco Systems
-// Licensed under the MIT License 
-//
-
-
-/* 
- * a Cisco Spark bot that:
- *   - sends a welcome message as he joins a room, 
- *   - answers to a /hello command, and greets the user that chatted him
- *   - supports /help and a fallback helper message
+/*
+ * a DD Cisco Spark bot that
  *
  * + leverages the "node-sparkclient" library for Bot to Cisco Spark communications.
  * 
  */
 
-import {parseCommand,sendMessage} from 'functions';
+import {parseCommand} from 'functions';
 
 process.env['SPARK_TOKEN'] = "ZTQ4YWVhM2ItMTk4MC00YTU0LWJmNGYtMzVlOTg0OTc0MzkwYWU5NGRlMDUtMDc3";
-
+console.log("Launching BOT with TOKEN: " + process.env.SPARK_TOKEN);
 //import {parseCommand, sendMessage} from './functions';
 
 var SparkBot = require("node-sparkbot");
 var bot = new SparkBot();
 //bot.interpreter.prefix = "#"; // Remove comment to overlad default / prefix to identify bot commands
+console.log("BOT is active..." );
 
-console.log("TOKEN: " + process.env.SPARK_TOKEN);
 var SparkAPIWrapper = require("node-sparkclient");
-
 var spark = new SparkAPIWrapper(process.env.SPARK_TOKEN);
-var portfolio = require("./portfolio");
-
+//var portfolio = require("./portfolio");
+console.log("SparAPIWrapper is active..." );
 
 bot.onMessage(function(trigger, message) {
 
-  console.log("new message from: " + trigger.data.personEmail + ", text: " + message.text);
+  console.log("New message from: " + trigger.data.personEmail + ", text: " + message.text);
 
    var command = bot.asCommand(message);
      if (command) {
-         console.log("detected command: " + command.keyword + ", with args: " + JSON.stringify(command.args));
-         parseCommand(command, message);
+         console.log("Detected command: " + command.keyword + ", with args: " + JSON.stringify(command.args));
+         parseCommand(spark, command, message);
      }
 });
 

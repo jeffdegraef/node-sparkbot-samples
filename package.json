@@ -10,7 +10,8 @@
     "Express"
   ],
   "scripts": {
-    "start": "node $SCRIPT",
+    //"start": "node $SCRIPT",
+    "start" : "node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm run test -- --watch"
   },

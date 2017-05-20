@@ -7,7 +7,7 @@ var webpack = require('webpack');
 module.exports = {
     entry: [
         'babel-polyfill',
-        './src/main'
+        './examples/didatabot.js'
     ],
     output: {
         publicPath: '/',
@@ -18,7 +18,8 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                include: path.join(__dirname, 'src'),
+                include: path.join(__dirname, 'examples'),
+                exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
                     presets: ["es2015"],
